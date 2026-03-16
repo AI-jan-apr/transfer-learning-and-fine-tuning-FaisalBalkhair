@@ -60,8 +60,6 @@ base_model.trainable = False
 
 This allows the model to reuse pretrained visual features such as edges, shapes, and textures learned from ImageNet.
 
-Training only the classifier layers makes the model converge faster and reduces training time.
-
 ---
 
 ## Fine-Tuning
@@ -103,6 +101,16 @@ To understand the training behavior, several plots were generated:
 - Training Loss
 - Validation Loss
 
+Below are the training and validation curves for accuracy and loss.
+
+### Feature Extraction:
+
+![Feature Extraction :](plots/Feature_extraction.png)
+
+### Fine Tuning:
+
+![Fine Tuning :](plots/fine_tuning.png)
+
 These visualizations help analyze:
 
 - learning progress
@@ -120,6 +128,14 @@ The confusion matrix helps identify:
 - correct classifications
 - misclassified samples
 - classes that the model confuses with each other
+
+### Feature Extraction:
+
+![Feature Extraction :](plots/feature_extraction_matrix.png)
+
+### Fine Tuning:
+
+![Fine Tuning :](plots/fine_tuning_matrix.png)
 
 This provides deeper insight into the model's strengths and weaknesses.
 
@@ -149,19 +165,63 @@ https://dagshub.com/Faisal27/food-efficientnet/experiments
 
 ---
 
+## Experiment Summary
+
+In this project, two training approaches were used.
+
+**Feature Extraction**
+
+- The EfficientNet base model was frozen.
+- Only the final classification layers were trained.
+- This method trains faster.
+
+Validation accuracy: **about 91% – 92%**
+
+**Fine-Tuning**
+
+- Some layers of EfficientNet were unfrozen.
+- The model was trained again using a smaller learning rate.
+
+Validation accuracy: **about 92% – 93%**
+
+Fine-Tuning slightly improved the model performance.
+
+---
+
+## Observations
+
+### Feature Extraction vs Fine-Tuning
+
+Feature Extraction trains faster because most of the network is frozen.
+
+Fine-Tuning gives slightly better results because the model can adjust some of the pretrained layers to the dataset.
+
+---
+
+### Convergence
+
+During training, the accuracy increased while the loss decreased.  
+This shows that the model was learning and converging during training.
+
+---
+
+### Generalization
+
+The validation accuracy is close to the training accuracy.  
+This means the model generalizes well to unseen data.
+
+---
+
+### Overfitting
+
+There is a small gap between training and validation results.  
+This suggests mild overfitting, but it is not severe.
+
 ## Conclusion
 
 Transfer Learning using EfficientNet enables building accurate image classification models even when datasets are relatively small.
 
 Fine-Tuning further improves performance by allowing the model to adapt pretrained ImageNet features to the specific dataset.
-
-## 📝 README Must Include:
-
-- experiment summary
-- plots for metrics
-- observations on:
-  - feature extract vs fine-tune
-  - generalization, convergence, overfitting
 
 ## 🔗 Helpful Links
 
