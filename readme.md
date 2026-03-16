@@ -1,62 +1,164 @@
 [![Review Assignment Due Date](https://classroom.github.com/assets/deadline-readme-button-22041afd0340ce965d47ae6ef1cefeee28c7c493a6346c4f15d667ab976d596c.svg)](https://classroom.github.com/a/DtxdB3_i)
-## 🧠 Task Overview
 
-You will apply **Transfer Learning** using **EfficientNet** models with two approaches:  
-1. **Feature Extraction**  
-2. **Fine-tuning**
+# CNN Image Classification using EfficientNet (Transfer Learning)
 
-⚠️ This task **must be completed in Google Colab or a cloud-based environment**. Training deep models like EfficientNet on local machines without GPU/TPU is highly inefficient and may lead to failed or incomplete experiments.
+## Project Overview
 
+This project implements an **image classification model** using **Transfer Learning with EfficientNetB0**.
 
+The objective is to classify images into multiple classes using a pretrained convolutional neural network and improve performance using **Fine-Tuning**.
 
-## 📁 Dataset
+The project includes:
 
-Dataset is already downloaded and loaded in the notebook. Preprocess as needed for training.
+- Data preprocessing
+- Transfer Learning (Feature Extraction)
+- Fine-Tuning
+- Model evaluation
+- Confusion Matrix
+- Accuracy and Loss visualization
+- Experiment tracking using MLflow and DagsHub
 
+---
 
+## Dataset
 
-## 🧪 Experiments
+The dataset contains labeled images used for a **multi-class classification task**.
 
-### 1️⃣ Feature Extraction  
-- freeze all base layers  
-- train only the classification head  
+Before training the model:
 
-### 2️⃣ Fine-tuning  
-- unfreeze last layers  
-- retrain full or partial base  
+- Images were resized to **224 × 224**
+- EfficientNet preprocessing was applied
+- The dataset was split into **training** and **validation** sets
 
-You can enhance fine-tuning with these techniques:
+---
 
-- **Unfreeze only last *n* layers**  
-  gradually increase trainable layers instead of full base model
+## Model Architecture
 
-- **Gradual unfreezing**  
-  unfreeze layers one block at a time across training epochs
+The model is based on **EfficientNetB0**, a pretrained convolutional neural network trained on the ImageNet dataset.
 
-- **Layer-wise learning rate decay**  
-  assign smaller LR to earlier layers and higher LR to deeper layers
+### Architecture
 
-For each:
-- document model version  
-- include training/validation metrics  
-- write your analysis
+Input Image (224x224x3)
+↓
+EfficientNetB0 (Pretrained)
+↓
+Global Average Pooling
+↓
+Dense Layer
+↓
+Softmax Output
 
+---
 
+## Transfer Learning (Feature Extraction)
 
-## 🧬 Bonus (Optional)
+In the first stage, we used **Transfer Learning**.
 
-- use **DagsHub** to upload and manage dataset in a cloud bucket  
-- track all runs using **MLflow**:
-  - versioned experiments  
-  - parameters, metrics, artifacts  
+The EfficientNet base model was loaded with pretrained weights and **frozen** so that only the classifier layers were trained.
+
+base_model.trainable = False
+
+This allows the model to reuse pretrained visual features such as edges, shapes, and textures learned from ImageNet.
+
+Training only the classifier layers makes the model converge faster and reduces training time.
+
+---
+
+## Fine-Tuning
+
+After training the classifier layers, **Fine-Tuning** was applied.
+
+Some of the deeper layers of EfficientNet were unfrozen so the model could slightly adjust the pretrained features to better fit the dataset.
+
+A smaller learning rate was used during this stage to prevent large updates that could damage the pretrained weights.
+
+Fine-Tuning helped the model adapt the learned ImageNet features to the dataset and improved the final performance.
+
+---
+
+## Model Evaluation
+
+The model was evaluated using several metrics:
+
+- Accuracy
+- Precision
+- Recall
+- F1-score
+- Confusion Matrix
+
+The validation accuracy achieved by the model was approximately:
+
+**~91% – 93%**
+
+These metrics help measure how well the model performs on unseen validation data.
+
+---
+
+## Training Visualization
+
+To understand the training behavior, several plots were generated:
+
+- Training Accuracy
+- Validation Accuracy
+- Training Loss
+- Validation Loss
+
+These visualizations help analyze:
+
+- learning progress
+- convergence behavior
+- potential overfitting
+
+---
+
+## Confusion Matrix
+
+A confusion matrix was generated to evaluate the prediction results across all classes.
+
+The confusion matrix helps identify:
+
+- correct classifications
+- misclassified samples
+- classes that the model confuses with each other
+
+This provides deeper insight into the model's strengths and weaknesses.
+
+---
+
+## Experiment Tracking
+
+Experiments were tracked using:
+
+- **MLflow**
+- **DagsHub**
+
+These tools allow tracking:
+
+- experiment runs
+- model parameters
+- training metrics
+- validation accuracy
+
+This makes it easier to compare different experiments such as:
+
+- Feature Extraction
+- Fine-Tuning
+
+---
+
+## Conclusion
+
+Transfer Learning using EfficientNet enables building accurate image classification models even when datasets are relatively small.
+
+Fine-Tuning further improves performance by allowing the model to adapt pretrained ImageNet features to the specific dataset.
 
 ## 📝 README Must Include:
 
-- experiment summary  
-- plots for metrics  
+- experiment summary
+- plots for metrics
 - observations on:
-  - feature extract vs fine-tune  
-  - generalization, convergence, overfitting 
+  - feature extract vs fine-tune
+  - generalization, convergence, overfitting
 
 ## 🔗 Helpful Links
 
